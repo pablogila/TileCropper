@@ -6,5 +6,5 @@ TileCropper is a tileset margin removal tool, to crop the tiles of a game tilese
 
 It just requires Python 3. Run as:  
 - Linux: `python3 TileCropper.py`  
-- Windows: `python3 TileCropper.py`  
+- Windows: `python TileCropper.py`  
 
