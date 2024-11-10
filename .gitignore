@@ -12,6 +12,8 @@
 *.svg
 _*
 
+# Load the example png
+!example.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
