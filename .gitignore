@@ -10,6 +10,7 @@
 *.jpg
 *.jpeg
 *.svg
+_*
 
 
 # Byte-compiled / optimized / DLL files
