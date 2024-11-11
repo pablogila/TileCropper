@@ -8,7 +8,7 @@ except ImportError:
     exit()
 
 
-version = 'v1.0.0'
+version = 'v1.1.0'
 '''Version of the tool. Uses semantic versioning, as v<MAJOR>.<MINOR>.<PATCH>.'''
 
 
@@ -33,6 +33,7 @@ def main():
             print(f'{i + 1}. {file}')
         answer = int(input('> '))
         file_to_crop = files[answer - 1]
+        print('')
     ask_for_operation(file_to_crop)
 
 
@@ -55,7 +56,7 @@ def get_files():
 
 def ask_for_operation(file_to_crop):
     '''Asks the user which operation to perform.'''
-    print('')
+    print('File to be processed: ' + file_to_crop)
     print('Select the operation to perform:')
     print('1. Remove tile separation and margins')
     print('2. Create isometric tilemap')
@@ -65,7 +66,7 @@ def ask_for_operation(file_to_crop):
     if answer2 == 1:
         ask_for_crop(file_to_crop)
     elif answer2 == 2:
-        create_iso_tilemap(file_to_crop)
+        ask_for_iso(file_to_crop)
     else:
         print('Please enter a valid operation.')
         ask_for_operation(file_to_crop)
@@ -81,6 +82,14 @@ def ask_for_crop(file):
     margin      = int(input('Enter margin:             '))
     print('')
     remove_separation_and_margin(file, tile_width, tile_height, separation, margin)
+
+
+def ask_for_iso(file):
+    '''Asks the user for the separation between tiles.'''
+    print('Creating isometric tilemap from ' + file + ' ...')
+    separation = int(input('Enter the desired separation between tiles (in px): '))
+    print('')
+    create_iso_tilemap(file, separation)
 
 
 def remove_separation_and_margin(input_file, tile_width, tile_height, separation, margin):
@@ -108,37 +117,40 @@ def remove_separation_and_margin(input_file, tile_width, tile_height, separation
     print('')
 
 
-def create_iso_tilemap(image_file):
+def create_iso_tilemap(image_file, separation:int=10):
     '''
     Take an input isometric tileset, and displace the tiles
     to be used as inputs for TileMapDual Godot Node.
+    An optional separation in pixels can be added between the tiles.
     See https://github.com/pablogila/TileMapDual_godot_node
     '''
     out_file = 'output_' + image_file
     image = cv2.imread(image_file)
     # Create a blank destination image with a transparent background
-    image_out = np.zeros((image.shape[0], image.shape[1], 4), dtype=np.uint8)
+    image_out = np.zeros((image.shape[0]+5*separation, image.shape[1]+5*separation, 4), dtype=np.uint8)
     # Width and height of the image
     h, w = image.shape[:2]
+    # Separation nickname
+    s = separation
     # Define the polygon points for the tile
     transformations = {
     # Final coordinates: initial corner coordinates
-        (0,     0)     : ((w/2,0),        (w*3/8,h/8),    (w/2,h/4),      (w*5/8,h/8)),
-        (0,     h/4)   : ((w*3/8, h/8),   (w/4,   h/4),   (w*3/8, h*3/8), (w/2,   h/4)),
-        (0,     h/2)   : ((w/4,   h/4),   (w/8,   h*3/8), (w/4,   h/2),   (w*3/8, h*3/8)),
-        (0,     h*3/4) : ((w/8,   h*3/8), (0,     h/2),   (w/8,   h*5/8), (w/4,   h/2)),
-        (w/4,   0)     : ((w*5/8, h/8),   (w/2,   h/4),   (w*5/8, h*3/8), (w*3/4, h/4)),
-        (w/4,   h/4)   : ((w/2,   h/4),   (w*3/8, h*3/8), (w/2,   h/2),   (w*5/8, h*3/8)),
-        (w/4,   h/2)   : ((w*3/8, h*3/8), (w/4,   h/2),   (w*3/8, h*5/8), (w/2,   h/2)),
-        (w/4,   h*3/4) : ((w/4,   h/2),   (w/8,   h*5/8), (w/4,   h*3/4), (w*3/8, h*5/8)),
-        (w/2,   0)     : ((w*3/4, h/4),   (w*5/8, h*3/8), (w*3/4, h/2),   (w*7/8, h*3/8)),
-        (w/2,   h/4)   : ((w*5/8, h*3/8), (w/2,   h/2),   (w*5/8, h*5/8), (w*3/4, h/2)),
-        (w/2,   h/2)   : ((w/2,   h/2),   (w*3/8, h*5/8), (w/2,   h*3/4), (w*5/8, h*5/8)),
-        (w/2,   h*3/4) : ((w*3/8, h*5/8), (w/4,   h*3/4), (w*3/8, h*7/8), (w/2,   h*3/4)),
-        (w*3/4, 0)     : ((w*7/8, h*3/8), (w*3/4, h/2),   (w*7/8, h*5/8), (w,     h/2)),
-        (w*3/4, h/4)   : ((w*3/4, h/2),   (w*5/8, h*5/8), (w*3/4, h*3/4), (w*7/8, h*5/8)),
-        (w*3/4, h/2)   : ((w*5/8, h*5/8), (w/2,   h*3/4), (w*5/8, h*7/8), (w*3/4, h*3/4)),
-        (w*3/4, h*3/4) : ((w/2,   h*3/4), (w*3/8, h*7/8), (w/2,   h),     (w*5/8, h*7/8))
+        (0+s,       0+s)       : ((w/2,   0),     (w*3/8, h/8),   (w/2,   h/4),   (w*5/8, h/8)),
+        (0+s,       h/4+2*s)   : ((w*3/8, h/8),   (w/4,   h/4),   (w*3/8, h*3/8), (w/2,   h/4)),
+        (0+s,       h/2+3*s)   : ((w/4,   h/4),   (w/8,   h*3/8), (w/4,   h/2),   (w*3/8, h*3/8)),
+        (0+s,       h*3/4+4*s) : ((w/8,   h*3/8), (0,     h/2),   (w/8,   h*5/8), (w/4,   h/2)),
+        (w/4+2*s,   0+s)       : ((w*5/8, h/8),   (w/2,   h/4),   (w*5/8, h*3/8), (w*3/4, h/4)),
+        (w/4+2*s,   h/4+2*s)   : ((w/2,   h/4),   (w*3/8, h*3/8), (w/2,   h/2),   (w*5/8, h*3/8)),
+        (w/4+2*s,   h/2+3*s)   : ((w*3/8, h*3/8), (w/4,   h/2),   (w*3/8, h*5/8), (w/2,   h/2)),
+        (w/4+2*s,   h*3/4+4*s) : ((w/4,   h/2),   (w/8,   h*5/8), (w/4,   h*3/4), (w*3/8, h*5/8)),
+        (w/2+3*s,   0+s)       : ((w*3/4, h/4),   (w*5/8, h*3/8), (w*3/4, h/2),   (w*7/8, h*3/8)),
+        (w/2+3*s,   h/4+2*s)   : ((w*5/8, h*3/8), (w/2,   h/2),   (w*5/8, h*5/8), (w*3/4, h/2)),
+        (w/2+3*s,   h/2+3*s)   : ((w/2,   h/2),   (w*3/8, h*5/8), (w/2,   h*3/4), (w*5/8, h*5/8)),
+        (w/2+3*s,   h*3/4+4*s) : ((w*3/8, h*5/8), (w/4,   h*3/4), (w*3/8, h*7/8), (w/2,   h*3/4)),
+        (w*3/4+4*s, 0+s)       : ((w*7/8, h*3/8), (w*3/4, h/2),   (w*7/8, h*5/8), (w,     h/2)),
+        (w*3/4+4*s, h/4+2*s)   : ((w*3/4, h/2),   (w*5/8, h*5/8), (w*3/4, h*3/4), (w*7/8, h*5/8)),
+        (w*3/4+4*s, h/2+3*s)   : ((w*5/8, h*5/8), (w/2,   h*3/4), (w*5/8, h*7/8), (w*3/4, h*3/4)),
+        (w*3/4+4*s, h*3/4+4*s) : ((w/2,   h*3/4), (w*3/8, h*7/8), (w/2,   h),     (w*5/8, h*7/8))
     }
     for paste_coords, points in transformations.items():
         paste_x = int(paste_coords[0])
@@ -158,20 +170,28 @@ def create_iso_tilemap(image_file):
         # Create an alpha channel for the cropped tile
         alpha_channel = np.zeros((h, w), dtype=np.uint8)
         cv2.fillPoly(alpha_channel, [pts - [x, y]], 255)
+        
         # Ensure the dimensions match exactly before combining
         if cropped_tile.shape[:2] != alpha_channel.shape:
             h_cropped, w_cropped = cropped_tile.shape[:2]
             alpha_channel = alpha_channel[:h_cropped, :w_cropped]
         # Combine the cropped tile with the alpha channel
         cropped_tile_with_alpha = np.dstack((cropped_tile, alpha_channel))
+        
         # Ensure the dimensions match exactly before pasting
         dst_slice = image_out[paste_y:paste_y+h, paste_x:paste_x+w]
-        if dst_slice.shape == cropped_tile_with_alpha.shape:
-            image_out[paste_y:paste_y+h, paste_x:paste_x+w] = cropped_tile_with_alpha
-        else:
-            h_dst, w_dst, _ = dst_slice.shape
-            cropped_tile_with_alpha = cropped_tile_with_alpha[:h_dst, :w_dst]
-            image_out[paste_y:paste_y+h_dst, paste_x:paste_x+w_dst] = cropped_tile_with_alpha
+        h_dst, w_dst, _ = dst_slice.shape
+        h_cropped, w_cropped, _ = cropped_tile_with_alpha.shape
+        
+        # Adjust the dimensions of cropped_tile_with_alpha if necessary
+        if h_dst != h_cropped or w_dst != w_cropped:
+            cropped_tile_with_alpha = cropped_tile_with_alpha[:min(h_dst, h_cropped), :min(w_dst, w_cropped), :]
+        
+        # Adjust the dimensions of dst_slice if necessary
+        dst_slice = image_out[paste_y:paste_y+cropped_tile_with_alpha.shape[0], paste_x:paste_x+cropped_tile_with_alpha.shape[1]]
+        
+        image_out[paste_y:paste_y+cropped_tile_with_alpha.shape[0], paste_x:paste_x+cropped_tile_with_alpha.shape[1]] = cropped_tile_with_alpha
+
     # Save the result
     cv2.imwrite(out_file, image_out)
     print('Saved as ' + out_file)

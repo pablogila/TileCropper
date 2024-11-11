@@ -5,7 +5,7 @@ TileCropper is a tool to manipulate your tileset, with the following options:
 2. Reorder an isometric tileset to a general-purpose isometric tileset. See https://github.com/pablogila/TileMapDual_godot_node.  
 
 The second option transforms a 16-tile isometric tileset as follows:  
-![](example.png)  
+![](docs/isometric_transformation.png)  
 
 ## Usage
 
