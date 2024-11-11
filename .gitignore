@@ -9,7 +9,7 @@
 #*.png
 *.jpg
 *.jpeg
-*.svg
+#*.svg
 _*
 
 # Load the example png

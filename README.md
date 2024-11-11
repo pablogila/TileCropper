@@ -20,5 +20,5 @@ The user will be asked for further input.
 
 Currently, the tool is not perfect. The real output for an isometric transformation has a slight misalignment, and also it replaces any transparency in the tiles with a black background. I am getting crazy with this, please help I have tried everything...  
 
-![](output_test.png)  
+![](docs/output_test.png)  
 
