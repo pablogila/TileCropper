@@ -56,12 +56,12 @@ func _calculate_iso_transformations(side) -> Dictionary:
 	var i_new: int
 	var j_new: int
 	for i in range(0, side-1):
-		i_new = i
-		j_new = i + side - 1
+		i_new = i - 1
+		j_new = i + side
 		for j in range(0, side-1):
-			iso_transformations[Vector2i(i, j)] = Vector2i(j_new,i_new)
 			i_new += 1
 			j_new -= 1
+			iso_transformations[Vector2i(i, j)] = Vector2i(j_new,i_new)
 	return iso_transformations
 
 
