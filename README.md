@@ -4,16 +4,22 @@ It is way easier to draw isometric tiles grouped together. But most game engines
 
 ![](docs/isometric_transformation.png)
 
-## Installation and usage
+
+## Installation
 
 TileCropper is installed as a regular Godot plugin.
 Just copy the `addons/TileCropper` folder to your Godot project, and enable it on *Project*, *Project settings...*, *Plugins*.  
+
+
+## Usage
 
 A new **TileCropper** dock will appear on the upper-left corner, next to the *Scene* and *Import* docks:  
 
 ![](docs/dock.png)
 
 You can now drag here your input tileset, and a single tile to be used as a cropping mask. You should also specify the number of tiles per side, which is 4 by default. Click the *Crop!* button, and you are done!  
+
+![](docs/demo.gif)
 
 Note that the size of the input images must match the size of the corresponding tileset and tile. In other words, do not use margins in these images. Check the `examples` folder for further reference.  
 
