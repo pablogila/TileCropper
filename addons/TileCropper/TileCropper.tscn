@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://brrtvcu5vq30y"]
 
 [ext_resource type="Script" path="res://addons/TileCropper/TileCropper.gd" id="1_1jqfo"]
-[ext_resource type="Texture2D" uid="uid://17v4eliabh15" path="res://addons/TileCropper/iso_transform.png" id="2_w8hjd"]
+[ext_resource type="Texture2D" uid="uid://kvwt6uiihb7x" path="res://addons/TileCropper/iso_transform.png" id="2_w8hjd"]
 
 [node name="TileCropper" type="ScrollContainer"]
 anchors_preset = 15
