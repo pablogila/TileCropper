@@ -1,3 +1,0 @@
-numpy         >= 2.1
-opencv-python >= 4.10
-pillow        >= 11.0

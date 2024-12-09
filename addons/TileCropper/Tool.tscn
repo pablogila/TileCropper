@@ -1,0 +1,106 @@
+[gd_scene load_steps=5 format=3 uid="uid://brrtvcu5vq30y"]
+
+[ext_resource type="Script" path="res://addons/TileCropper/Tool.gd" id="1_7giiu"]
+[ext_resource type="Script" path="res://addons/TileCropper/TilePicker.gd" id="2_exmm8"]
+[ext_resource type="Texture2D" uid="uid://17v4eliabh15" path="res://addons/TileCropper/iso_transform.png" id="3_l0aya"]
+
+[sub_resource type="Theme" id="Theme_jttvu"]
+
+[node name="TileCropper" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_jttvu")
+script = ExtResource("1_7giiu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="IsoLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Isometric Cropping"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_l0aya")
+expand_mode = 5
+stretch_mode = 4
+
+[node name="HBoxTileset" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxTileset"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input tileset"
+
+[node name="InputTileset" type="EditorResourcePicker" parent="VBoxContainer/HBoxTileset"]
+editor_description = "Input isometric tileset to crop. Height and width must match the corners."
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Input tileset"
+base_type = "Texture2D"
+script = ExtResource("2_exmm8")
+
+[node name="HBoxMask" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxMask"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Input tile mask"
+
+[node name="InputMask" type="EditorResourcePicker" parent="VBoxContainer/HBoxMask"]
+editor_description = "Input isometric single tile, to be used as a mask to crop the isometric tilemap. Height and width must match the corners."
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Input tile mask"
+base_type = "Texture2D"
+script = ExtResource("2_exmm8")
+
+[node name="HBoxTiles" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxTiles"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Tiles per side"
+
+[node name="TilesPerSide" type="SpinBox" parent="VBoxContainer/HBoxTiles"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 4.0
+alignment = 1
+
+[node name="IsoCropButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Crop!"
+
+[node name="Info" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Fill the input boxes and start cropping!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[connection signal="pressed" from="VBoxContainer/IsoCropButton" to="." method="_on_iso_crop_button_pressed"]
