@@ -77,6 +77,7 @@ func _crop_iso_tileset():
 	_calculate_iso_transformations()
 	_build_iso_slices()
 	_build_iso_image()
+	EditorInterface.get_resource_filesystem().scan()
 	info.text = "Done! output saved at '" + output_path + "'"
 	await get_tree().create_timer(waiting_time).timeout
 	iso_button.disabled = false
