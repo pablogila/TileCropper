@@ -37,5 +37,6 @@ This project is Open Source Software, released under the [MIT license](LICENSE).
 I personally encourage you to send back any significant improvements to this code so that the Godot community continues to thrive. Thanks! 
 
 This project has contributions from:
-- Pablo Gila (@gilapixel)
+- [Pablo Gila](https://github.com/pablogila) ([@gilapixel](https://pablogila.github.io/gilapixel.html))
 - u/pideon_pete
+- [Oleg Chernyshenko](https://github.com/the-old-one)
