@@ -19,7 +19,7 @@ A new **TileCropper** dock will appear on the upper-left corner, next to the *Sc
 
 You can now drag here your input tileset, and a single tile to be used as a cropping mask. You should also specify the number of tiles per side, which is 4 by default. Click the *Crop!* button, and you are done!  
 
-![](docs/demo.gif)
+![](docs/demo.mp4)
 
 Note that the size of the input images must match the size of the corresponding tileset and tile. In other words, do not use margins in these images. Check the `examples` folder for further reference.  
 
